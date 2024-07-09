@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <title>Salary Proofing</title>
+</head>
+
+    <style>
+        body {
+        font-family: 'Noto Kufi Arabic', sans-serif;
+        background-color: #00880bbe;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        font-size: 0.8rem;
+        text-align: right;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        margin-bottom: 5px;
+        color: #ffa500;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="button"] {
+        font-family: 'Noto Kufi Arabic', sans-serif;
+        border: 1px solid #ddd;
+        width: 100%;
+        padding: 7px;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #f4f4f9;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="button"] {
+        background-color: #00C853;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding: 0.7rem;
+        font-weight: 600;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="button"]:hover {
+        background-color: #00A743;
+        box-shadow: 0 4px 12px rgba(0, 167, 67, 0.3);
+    }
+
+    p {
+        text-align: center;
+        color: #333;
+        margin-top: 40px;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="date"]::placeholder {
+        color: #aaa;
+    }
+
+    #newSal, 
+    #entitlementDate, 
+    #entitlementType, 
+    #degree, 
+    #step {
+        background-color: #f1f1f1;
+        cursor: not-allowed;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="button"]:focus {
+        outline: none;
+        border-color: #28a745;
+    }
+
+    input[type="text"]#newSal:focus,
+    input[type="text"]#entitlementDate:focus,
+    input[type="text"]#entitlementType:focus,
+    input[type="text"]#degree:focus,
+    input[type="text"]#step:focus {
+        border-color: #ccc;
+    }
+
+    </style>
+<body>
+    <div class="container">
+        <h1>استعراض الراتب الاسمي اللاحق</h1>
+        <div class="form-group">
+            <label for="sal">الراتب الاسمي الحالي</label>
+            <input type="text" id="sal" name="nsal">
+        </div>
+        <div class="form-group">
+            <label for="lastPromotion">تاريخ اخر علاوة او ترفيع</label>
+            <input type="date" id="lastPromotion" name="lastPromotion">
+        </div>
+        <div class="form-group">
+            <label for="appreciationLetters">عدد كتب الشكر والتقدير</label>
+            <input type="text" id="appreciationLetters" name="appreciationLetters" placeholder="(اقصى عدد/3)">
+        </div>
+        <div class="form-group">
+            <input type="button" onclick="calculateSalary()" value="استعراض">
+        </div>
+        <div class="form-group">
+            <label for="newSal">الراتب الاسمي الجديد</label>
+            <input type="text" id="newSal" name="newSal" disabled>
+        </div>
+        <div class="form-group">
+            <label for="entitlementDate">تاريخ الاستحقاق</label>
+            <input type="text" id="entitlementDate" name="entitlementDate" disabled>
+        </div>
+        <div class="form-group">
+            <label for="entitlementType">نوع الاستحقاق</label>
+            <input type="text" id="entitlementType" name="entitlementType" disabled>
+        </div>
+        <div class="form-group">
+            <label for="degree">الدرجة</label>
+            <input type="text" id="degree" name="degree" disabled>
+        </div>
+        <div class="form-group">
+            <label for="step">المرحلة</label>
+            <input type="text" id="step" name="step" disabled>
+        </div>
+        <p>حقوق الطبع والنشر © 2024</p>
+    </div>
+
+    <script>
+        function calculateSalary() {
+            const basicSal = Number(document.getElementById("sal").value);
+            const lastPromotion = new Date(document.getElementById("lastPromotion").value);
+            const appreciationLetters = Number(document.getElementById("appreciationLetters").value);
+
+            let wsalDegree = 0;
+            let wsalIncreaseAmt = 0;
+            let wsalStep1 = 0;
+            let wsalIncreaseYear = 0;
+
+            if (basicSal >= 910) {
+                wsalDegree = 1;
+                wsalIncreaseAmt = 20;
+                wsalStep1 = 910;
+                wsalIncreaseYear = 0;
+            } else if (basicSal >= 170 && basicSal <= 179) {
+                wsalDegree = 10;
+                wsalIncreaseAmt = 3;
+                wsalStep1 = 170;
+                wsalIncreaseYear = 4;
+            } else if (basicSal >= 210 && basicSal <= 219) {
+                wsalDegree = 9;
+                wsalIncreaseAmt = 3;
+                wsalStep1 = 210;
+                wsalIncreaseYear = 4;
+            } else if (basicSal >= 260 && basicSal <= 269) {
+                wsalDegree = 8;
+                wsalIncreaseAmt = 3;
+                wsalStep1 = 260;
+                wsalIncreaseYear = 4;
+            } else if (basicSal >= 296 && basicSal <= 314) {
+                wsalDegree = 7;
+                wsalIncreaseAmt = 6;
+                wsalStep1 = 296;
+                wsalIncreaseYear = 4;
+            } else if (basicSal >= 362 && basicSal <= 380) {
+                wsalDegree = 6;
+                wsalIncreaseAmt = 6;
+                wsalStep1 = 362;
+                wsalIncreaseYear = 4;
+            } else if (basicSal >= 429 && basicSal <= 453) {
+                wsalDegree = 5;
+                wsalIncreaseAmt = 6;
+                wsalStep1 = 429;
+                wsalIncreaseYear = 5;
+            } else if (basicSal >= 509 && basicSal <= 541) {
+                wsalDegree = 4;
+                wsalIncreaseAmt = 8;
+                wsalStep1 = 509;
+                wsalIncreaseYear = 5;
+            } else if (basicSal >= 600 && basicSal <= 640) {
+                wsalDegree = 3;
+                wsalIncreaseAmt = 10;
+                wsalStep1 = 600;
+                wsalIncreaseYear = 5;
+            } else if (basicSal >= 723 && basicSal <= 791) {
+                wsalDegree = 2;
+                wsalIncreaseAmt = 17;
+                wsalStep1 = 723;
+                wsalIncreaseYear = 5;
+            }
+
+            const wdiffSal = basicSal - wsalStep1;
+            const wmodSal = wdiffSal % wsalIncreaseAmt;
+            let totsal = 0;
+
+            if (wmodSal === 0) {
+                if (wdiffSal === 0 || wsalDegree === 1) {
+                    totsal = basicSal + wsalIncreaseAmt;
+                } else {
+                    const wdivSal = (wdiffSal / wsalIncreaseAmt) + 1;
+                    if (wdivSal < wsalIncreaseYear) {
+                        totsal = basicSal + wsalIncreaseAmt;
+                    } else {
+                        wsalDegree -= 1;
+                        switch (wsalDegree) {
+                            case 9: totsal = 210; break;
+                            case 8: totsal = 260; break;
+                            case 7: totsal = 296; break;
+                            case 6: totsal = 362; break;
+                            case 5: totsal = 429; break;
+                            case 4: totsal = 509; break;
+                            case 3: totsal = 600; break;
+                            case 2: totsal = 723; break;
+                            case 1: totsal = 910; break;
+                            default: totsal = 0; break;
+                        }
+                    }
+                }
+            } else {
+                totsal = 0;
+            }
+
+            document.getElementById("newSal").value = totsal;
+
+            // Calculate entitlement date
+            let entitlementDate = new Date(lastPromotion);
+            entitlementDate.setFullYear(entitlementDate.getFullYear() + 1);
+            if (appreciationLetters === 1) entitlementDate.setMonth(entitlementDate.getMonth() - 1);
+            if (appreciationLetters === 2) entitlementDate.setMonth(entitlementDate.getMonth() - 2);
+            if (appreciationLetters === 3) entitlementDate.setMonth(entitlementDate.getMonth() - 3);
+            document.getElementById("entitlementDate").value = entitlementDate.toISOString().split('T')[0];
+
+            // Determine entitlement type
+            let entitlementType = "";
+            if (basicSal >= 910) entitlementType = "علاوة";
+            else if (basicSal >= 170 && basicSal < 179) entitlementType = "علاوة";
+            else if (basicSal >= 210 && basicSal < 219) entitlementType = "علاوة";
+            else if (basicSal >= 260 && basicSal < 269) entitlementType = "علاوة";
+            else if (basicSal >= 296 && basicSal < 314) entitlementType = "علاوة";
+            else if (basicSal >= 362 && basicSal < 380) entitlementType = "علاوة";
+            else if (basicSal >= 429 && basicSal < 453) entitlementType = "علاوة";
+            else if (basicSal >= 509 && basicSal < 541) entitlementType = "علاوة";
+            else if (basicSal >= 600 && basicSal < 640) entitlementType = "علاوة";
+            else if (basicSal >= 723 && basicSal < 791) entitlementType = "علاوة";
+            else entitlementType = "ترفيع";
+            document.getElementById("entitlementType").value = entitlementType;
+
+            // Determine degree
+            document.getElementById("degree").value = wsalDegree;
+
+            // Determine step
+            let step = 0;
+            if (entitlementType === "ترفيع") step = 1;
+            else {
+                const steps = {
+                    930: 2, 950: 3, 970: 4, 990: 5, 1010: 6, 1030: 7, 1050: 8, 1070: 9, 1090: 10, 1110: 11,
+                    740: 2, 757: 3, 774: 4, 791: 5,
+                    610: 2, 620: 3, 630: 4, 640: 5,
+                    517: 2, 525: 3, 533: 4, 541: 5,
+                    435: 2, 441: 3, 447: 4, 453: 5,
+                    368: 2, 374: 3, 380: 4,
+                    302: 2, 308: 3, 314: 4,
+                    263: 2, 266: 3, 269: 4,
+                    213: 2, 216: 3, 219: 4,
+                    172: 2, 176: 3, 179: 4,
+                };
+                step = steps[totsal] || 0;
+            }
+            document.getElementById("step").value = step;
+        }
+    </script>
+</body>
+</html>
