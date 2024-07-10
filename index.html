@@ -4,123 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="style.css"> -->
     <title>Salary Proofing</title>
 </head>
 
-    <style>
-        body {
-        font-family: 'Noto Kufi Arabic', sans-serif;
-        background-color: #00880bbe;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+<style>
+    body {
+    font-family: 'Noto Kufi Arabic', sans-serif;
+    background-color: #00880bbe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
-    .container {
-        font-size: 0.8rem;
-        text-align: right;
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 500px;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
+.container {
+    font-size: 0.8rem;
+    text-align: right;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
 
-    h1 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 20px;
-    }
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 15px;
-    }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
 
-    .form-group label {
-        margin-bottom: 5px;
-        color: #ffa500;
-    }
+.form-group label {
+    margin-bottom: 5px;
+    color: #ffa500;
+}
 
-    input[type="text"],
-    input[type="date"],
-    input[type="button"] {
-        font-family: 'Noto Kufi Arabic', sans-serif;
-        border: 1px solid #ddd;
-        width: 100%;
-        padding: 7px;
-        border-radius: 5px;
-        box-sizing: border-box;
-        background-color: #f4f4f9;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: border-color 0.3s, box-shadow 0.3s;
-    }
+input[type="text"],
+input[type="date"],
+input[type="button"] {
+    font-family: 'Noto Kufi Arabic', sans-serif;
+    border: 1px solid #ddd;
+    width: 100%;
+    padding: 7px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #f4f4f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
 
-    input[type="button"] {
-        background-color: #00C853;
-        color: #ffffff;
-        border: none;
-        cursor: pointer;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        padding: 0.7rem;
-        font-weight: 600;
-        transition: background-color 0.3s, box-shadow 0.3s;
-    }
+.form-group select {
+    font-family: 'Noto Kufi Arabic', sans-serif;
+    border: 1px solid #ddd;
+    width: 100%;
+    padding: 7px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #f4f4f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
 
-    input[type="button"]:hover {
-        background-color: #00A743;
-        box-shadow: 0 4px 12px rgba(0, 167, 67, 0.3);
-    }
+input[type="button"] {
+    background-color: #00C853;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+    font-weight: 600;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
 
-    p {
-        text-align: center;
-        color: #333;
-        margin-top: 40px;
-    }
+input[type="button"]:hover {
+    background-color: #00A743;
+    box-shadow: 0 4px 12px rgba(0, 167, 67, 0.3);
+}
 
-    input[type="text"]::placeholder,
-    input[type="date"]::placeholder {
-        color: #aaa;
-    }
+p {
+    text-align: center;
+    color: #333;
+    margin-top: 40px;
+}
 
-    #newSal, 
-    #entitlementDate, 
-    #entitlementType, 
-    #degree, 
-    #step {
-        background-color: #f1f1f1;
-        cursor: not-allowed;
-    }
+input[type="text"]::placeholder,
+input[type="date"]::placeholder {
+    color: #aaa;
+}
 
-    input[type="text"]:focus,
-    input[type="date"]:focus,
-    input[type="button"]:focus {
-        outline: none;
-        border-color: #28a745;
-    }
+#newSal, 
+#entitlementDate, 
+#entitlementType, 
+#degree, 
+#step {
+    background-color: #f1f1f1;
+    cursor: not-allowed;
+}
 
-    input[type="text"]#newSal:focus,
-    input[type="text"]#entitlementDate:focus,
-    input[type="text"]#entitlementType:focus,
-    input[type="text"]#degree:focus,
-    input[type="text"]#step:focus {
-        border-color: #ccc;
-    }
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="button"]:focus {
+    outline: none;
+    border-color: #28a745;
+}
 
-    </style>
+input[type="text"]#newSal:focus,
+input[type="text"]#entitlementDate:focus,
+input[type="text"]#entitlementType:focus,
+input[type="text"]#degree:focus,
+input[type="text"]#step:focus {
+    border-color: #ccc;
+}
+
+</style>
+
 <body>
     <div class="container">
         <h1>استعراض الراتب الاسمي اللاحق</h1>
         <div class="form-group">
             <label for="sal">الراتب الاسمي الحالي</label>
-            <input type="text" id="sal" name="nsal">
+            <!-- <input type="text" id="sal" name="nsal"> -->
+            <select id="sal" name="nsal">
+                <option>170</option><option>173</option><option>176</option><option>179</option>
+                <option>210</option><option>213</option><option>216</option><option>219</option>
+                <option>260</option><option>263</option><option>266</option><option>269</option>
+                <option>296</option><option>302</option><option>308</option><option>314</option>
+                <option>362</option><option>368</option><option>374</option><option>380</option>
+                <option>429</option><option>435</option><option>441</option><option>447</option>
+                <option>509</option><option>517</option><option>525</option><option>533</option><option>541</option>
+                <option>600</option><option>610</option><option>620</option><option>630</option><option>640</option>
+                <option>723</option><option>740</option><option>757</option><option>774</option><option>791</option>
+                <option>910</option><option>930</option><option>950</option><option>970</option><option>990</option><option>1010</option><option>1030</option><option>1050</option></option><option>1070</option></option><option>1090</option></option><option>1110</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="lastPromotion">تاريخ اخر علاوة او ترفيع</label>
